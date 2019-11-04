@@ -27,15 +27,54 @@ namespace FontCreator
         {
             InitializeComponent();
 
-            SetGrid(12, 16);
+            EventManager.RegisterClassHandler(typeof(Window),
+                Keyboard.KeyUpEvent, new KeyEventHandler(OnKeyUp), true);
 
-            var text = LoadFontData("font_12x16.txt");
 
-            currentFont = ParseFontText(12, 16, text);
+            int w = 12;
+            int h = 18;
+
+            SetGrid(w, h);
+
+            var text = LoadFontData($"font_{w}x{h}.txt");
+
+            currentFont = ParseFontText(w, h, text);
 
             InitUI();
 
             UpdateGrid();
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.B)
+            {
+                BtnBack_Click(sender, new RoutedEventArgs());
+            }
+            else if(e.Key == Key.N)
+            {
+                BtnNext_Click(sender, new RoutedEventArgs());
+            }
+            else if (e.Key == Key.Up)
+            {
+                ShiftUp();
+            }
+            else if (e.Key == Key.Down)
+            {
+                ShiftDown();
+            }
+            else if (e.Key == Key.Left)
+            {
+                ShiftLeft();
+            }
+            else if (e.Key == Key.Right)
+            {
+                ShiftRight();
+            }
+            else if (e.Key == Key.C)
+            {
+                BtnClear_Click(sender, new RoutedEventArgs());
+            }
         }
 
         void InitUI()
@@ -69,7 +108,10 @@ namespace FontCreator
         private void BtnNext_Click(object sender, RoutedEventArgs e)
         {
             if (characterIndex < currentFont.Count - 1)
+            {
                 characterIndex++;
+            }
+ 
             UpdateGrid();
         }
 
@@ -84,6 +126,30 @@ namespace FontCreator
             if (characterIndex > 0)
                 characterIndex--;
 
+            UpdateGrid();
+        }
+
+        void ShiftLeft()
+        {
+            currentFont.GetCharacter(characterIndex).ShiftLeft();
+            UpdateGrid();
+        }
+
+        void ShiftRight()
+        {
+            currentFont.GetCharacter(characterIndex).ShiftRight();
+            UpdateGrid();
+        }
+
+        void ShiftUp()
+        {
+            currentFont.GetCharacter(characterIndex).ShiftUp();
+            UpdateGrid();
+        }
+
+        void ShiftDown()
+        {
+            currentFont.GetCharacter(characterIndex).ShiftDown();
             UpdateGrid();
         }
 

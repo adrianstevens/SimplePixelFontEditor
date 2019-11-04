@@ -56,6 +56,87 @@ namespace FontCreator.Models
             }
         }
 
+        public void ShiftLeft()
+        {
+            var temp = new bool[Height];
+
+            for (int i = 0; i < Width - 1; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    if (i == 0) { temp[j] = IsPixelSet(0, j); }
+
+                    SetPixel(i, j, IsPixelSet(i + 1, j));
+                }
+            }
+
+            for (int j = 0; j < Height; j++)
+            {
+                SetPixel(Width - 1, j, temp[j]);
+            }
+        }
+
+        public void ShiftRight()
+        {
+            var temp = new bool[Height];
+
+            for (int i = Width - 1; i > 0; i--)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    if (i == Width - 1) { temp[j] = IsPixelSet(Width - 1, j); }
+
+                    SetPixel(i, j, IsPixelSet(i - 1, j));
+                }
+            }
+
+            for (int j = 0; j < Height; j++)
+            {
+                SetPixel(0, j, temp[j]);
+            }
+        }
+
+
+        public void ShiftUp()
+        {
+            var temp = new bool[Width];
+            
+            for(int j = 0; j < Height - 1; j++)
+            {
+                for (int i = 0; i < Width; i++)
+                {
+                    if (j == 0){ temp[i] = IsPixelSet(i, j); }
+
+                    SetPixel(i, j, IsPixelSet(i, j + 1));
+                }
+            }
+
+            for (int i = 0; i < Width; i++) 
+            {
+                SetPixel(i, Height - 1, temp[i]);
+            }
+        }
+
+        public void ShiftDown()
+        {
+            var temp = new bool[Width];
+
+            for (int j = Height - 1; j > 0; j--)
+            {
+                for (int i = 0; i < Width; i++)
+                {
+                    if (j == Height - 1) { temp[i] = IsPixelSet(i, Height - 1); }
+
+                    SetPixel(i, j, IsPixelSet(i, j - 1));
+                }
+            }
+
+            for (int i = 0; i < Width; i++)
+            {
+                SetPixel(i, 0, temp[i]);
+            }
+        }
+
         public void Clear()
         {
             for (int i = 0; i < data.Length; i++)

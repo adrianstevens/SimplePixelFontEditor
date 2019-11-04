@@ -21,8 +21,9 @@
             <Button Name="btnEnd" Content="End" VerticalAlignment="Top" Margin="5" Grid.Column="3"/>
         </Grid>
         <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="508,495,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btn8x12" Content="Load 8x12" HorizontalAlignment="Left" Margin="508,470,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btn16x16" Content="Load 12x16" HorizontalAlignment="Left" Margin="508,445,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn6x8" Content="Load 6x8" HorizontalAlignment="Left" Margin="508,445,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn8x12" Content="Load 8x12" HorizontalAlignment="Left" Margin="508,417,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn16x16" Content="Load 12x16" HorizontalAlignment="Left" Margin="508,389,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBlock x:Name="txtChar" HorizontalAlignment="Left" Margin="429,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="173" Width="200" FontSize="144"/>
         <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="113,430,0,0" VerticalAlignment="Top" Width="191"/>
     </Grid>
