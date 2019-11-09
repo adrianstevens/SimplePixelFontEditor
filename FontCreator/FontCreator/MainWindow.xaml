@@ -5,26 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FontCreator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
+        Title="PixelFont Creator v0.0.2 - Nov, 2019" 
+        Height="600">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
         <Grid Name="gridPixel" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="400" Background="#FF1B4729" />
-        <Grid Margin="10, 420, 0, 0" Width="400" HorizontalAlignment="Left" Height="50">
+        <Grid Margin="10" HorizontalAlignment="Stretch" Height="60" Grid.Row="1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Name="btnStart" Content="Start" VerticalAlignment="Top" Margin="5" />
-            <Button Name="btnBack" Content="Back" VerticalAlignment="Top" Margin="5" Grid.Column="1" />
-            <Button Name="btnNext" Content="Next" VerticalAlignment="Top" Margin="5" Grid.Column="2"/>
-            <Button Name="btnEnd" Content="End" VerticalAlignment="Top" Margin="5" Grid.Column="3"/>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Name="btnStart" Content="Start (s)" VerticalAlignment="Top" Margin="5" Grid.Column="0" />
+            <Button Name="btnBack" Content="Back (b)" VerticalAlignment="Top" Margin="5" Grid.Column="1" />
+            <Button Name="btnNext" Content="Next (n)" VerticalAlignment="Top" Margin="5" Grid.Column="2" />
+            <Button Name="btnEnd" Content="End (e)" VerticalAlignment="Top" Margin="5" Grid.Column="3" />
+
+            <Button x:Name="btnClear" Content="Clear" VerticalAlignment="Top" Margin="5" Grid.Row="1" />
         </Grid>
-        <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="508,495,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btn6x8" Content="Load 6x8" HorizontalAlignment="Left" Margin="508,445,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btn8x12" Content="Load 8x12" HorizontalAlignment="Left" Margin="508,417,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btn16x16" Content="Load 12x16" HorizontalAlignment="Left" Margin="508,389,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBlock x:Name="txtChar" HorizontalAlignment="Left" Margin="429,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="173" Width="200" FontSize="144"/>
-        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="113,430,0,0" VerticalAlignment="Top" Width="191"/>
+
+        <Grid Margin="10" Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Name="btnSave" Content="Save" VerticalAlignment="Top" Margin="5" Grid.Column="0" />
+            <Button x:Name="btn6x8" Content="Load 6x8" VerticalAlignment="Top" Margin="5" Grid.Column="1" />
+            <Button x:Name="btn8x12" Content="Load 8x12" VerticalAlignment="Top" Margin="5" Grid.Column="2" />
+            <Button x:Name="btn16x16" Content="Load 12x16" VerticalAlignment="Top" Margin="5" Grid.Column="3" />
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="txtChar" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="" Margin="5"  VerticalAlignment="Top" FontSize="100"/>
+            <TextBlock x:Name="txtAscii" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="" Margin="5"  VerticalAlignment="Top" Grid.Column="1"/>
+            <TextBox x:Name="txtStatus" TextWrapping="Wrap" Margin="5" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="LightGray" />
+
+        </Grid>
+
     </Grid>
 </Window>

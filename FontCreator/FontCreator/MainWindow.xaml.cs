@@ -30,49 +30,58 @@ namespace FontCreator
             EventManager.RegisterClassHandler(typeof(Window),
                 Keyboard.KeyUpEvent, new KeyEventHandler(OnKeyUp), true);
 
-            int w = 12;
-            int h = 20;
-
-            SetGrid(w, h);
-
-            var text = LoadFontData($"font_{w}x{h}.txt");
-
-            currentFont = ParseFontText(w, h, text);
-
             InitUI();
 
+            int w = 12;
+            int h = 16;
+
+            LoadFont(w, h);
+        }
+
+        private void LoadFont(int width, int height)
+        {
+            var fontName = $"font_{width}x{height}.txt";
+            var text = LoadFontData(fontName);
+
+            currentFont = ParseFontText(width, height, text);
+
+            SetGrid(width, height);
             UpdateGrid();
+
+            UpdateStatus($"{fontName} loaded");
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.B)
+            switch (e.Key)
             {
-                BtnBack_Click(sender, new RoutedEventArgs());
-            }
-            else if(e.Key == Key.N)
-            {
-                BtnNext_Click(sender, new RoutedEventArgs());
-            }
-            else if (e.Key == Key.Up)
-            {
-                ShiftUp();
-            }
-            else if (e.Key == Key.Down)
-            {
-                ShiftDown();
-            }
-            else if (e.Key == Key.Left)
-            {
-                ShiftLeft();
-            }
-            else if (e.Key == Key.Right)
-            {
-                ShiftRight();
-            }
-            else if (e.Key == Key.C)
-            {
-                BtnClear_Click(sender, new RoutedEventArgs());
+                case Key.B:
+                    BtnBack_Click(sender, new RoutedEventArgs());
+                    break;
+                case Key.C:
+                    BtnClear_Click(sender, new RoutedEventArgs());
+                    break;
+                case Key.E:
+                    BtnEnd_Click(sender, new RoutedEventArgs());
+                    break;
+                case Key.N:
+                    BtnNext_Click(sender, new RoutedEventArgs());
+                    break;
+                case Key.S:
+                    BtnStart_Click(sender, new RoutedEventArgs());
+                    break;
+                case Key.Left:
+                    ShiftLeft();
+                    break;
+                case Key.Right:
+                    ShiftRight();
+                    break;
+                case Key.Up:
+                    ShiftUp();
+                    break;
+                case Key.Down:
+                    ShiftDown();
+                    break;
             }
         }
 
@@ -90,6 +99,8 @@ namespace FontCreator
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             currentFont.Save();
+
+            UpdateStatus($"saved");
         }
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)
@@ -162,6 +173,7 @@ namespace FontCreator
                 }
             }
 
+            txtAscii.Text = $"Ascii: {32 + characterIndex}";
             txtChar.Text = ((char)(32 + characterIndex)).ToString();
         }
 
@@ -208,12 +220,14 @@ namespace FontCreator
             gridPixel.ColumnDefinitions.Clear();
             gridPixel.RowDefinitions.Clear();
 
-            for(int i = 0; i < rows; i++)
+            int count = Math.Max(rows, columns);
+
+            for(int i = 0; i < count; i++)
             {
                 gridPixel.RowDefinitions.Add(new RowDefinition());
             }
 
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < count; j++)
             {
                 gridPixel.ColumnDefinitions.Add(new ColumnDefinition());
             }
@@ -280,6 +294,11 @@ namespace FontCreator
                     return reader.ReadToEnd();
                 }
             }
+        }
+
+        private void UpdateStatus(string text)
+        {
+            txtStatus.Text += text + "\r\n"; 
         }
     }
 }
