@@ -41,14 +41,22 @@ namespace FontCreator
         private void LoadFont(int width, int height)
         {
             var fontName = $"font_{width}x{height}.txt";
-            var text = LoadFontData(fontName);
 
-            currentFont = ParseFontText(width, height, text);
+            try
+            {
+                var text = LoadFontData(fontName);
+                currentFont = ParseFontText(width, height, text);
+                UpdateStatus($"{fontName} loaded");
+            }
+            catch
+            {
+                UpdateStatus($"{fontName} not found");
+                UpdateStatus($"Creating new font");
+                currentFont = new PixelFont(height, width, 32, 127);
+            }
 
             SetGrid(width, height);
             UpdateGrid();
-
-            UpdateStatus($"{fontName} loaded");
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
@@ -93,7 +101,8 @@ namespace FontCreator
             btnStart.Click += BtnStart_Click;
 
             btnClear.Click += BtnClear_Click;
-            btnSave.Click += BtnSave_Click;
+            btnSaveFont.Click += BtnSave_Click;
+            btnLoadFont.Click += BtnLoad_Click;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -101,6 +110,14 @@ namespace FontCreator
             currentFont.Save();
 
             UpdateStatus($"saved");
+        }
+
+        private void BtnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            int w = int.Parse(txtFontWidth.Text);
+            int h = int.Parse(txtFontHeight.Text);
+
+            LoadFont(w, h);
         }
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)
@@ -249,6 +266,21 @@ namespace FontCreator
 
                     cells[x, y] = rect;
 
+                   // rect.PreviewMouseLeftButtonUp
+
+                    rect.PreviewMouseLeftButtonDown += (s, a) =>
+                    {
+                        if (rect.Background == enabledBrush)
+                        {
+                            rect.Background = disabledBrush;
+                        }
+                        else
+                        {
+                            rect.Background = enabledBrush;
+                        }
+                        currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), isDrawing);
+                    };
+
                     rect.MouseRightButtonDown += (s, a) =>
                     {
                         if(rect.Background == enabledBrush)
@@ -279,6 +311,12 @@ namespace FontCreator
                 }
             }
         }
+
+        private void Rect_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         bool isDrawing = true;
 
         string LoadFontData(string name)

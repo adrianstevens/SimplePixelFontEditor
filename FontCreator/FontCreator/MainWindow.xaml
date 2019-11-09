@@ -43,15 +43,18 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Name="btnSave" Content="Save" VerticalAlignment="Top" Margin="5" Grid.Column="0" />
-            <Button x:Name="btn6x8" Content="Load 6x8" VerticalAlignment="Top" Margin="5" Grid.Column="1" />
-            <Button x:Name="btn8x12" Content="Load 8x12" VerticalAlignment="Top" Margin="5" Grid.Column="2" />
-            <Button x:Name="btn16x16" Content="Load 12x16" VerticalAlignment="Top" Margin="5" Grid.Column="3" />
+            <Button Name="btnSaveFont" Content="Save font" VerticalAlignment="Top" Margin="5" Grid.Column="0" Grid.Row="1" />
+            <Button x:Name="btnLoadFont" Content="Load font" VerticalAlignment="Top" Margin="5" Grid.Column="0" Grid.Row="0" />
+            <TextBlock Text="Font width:" VerticalAlignment="Top" Margin="5" Grid.Column="1" Grid.Row="0" />
+            <TextBox x:Name="txtFontWidth" Text="12" VerticalAlignment="Top" Margin="5" Grid.Column="2" Grid.Row="0" />
+            <TextBlock Text="Font height:" VerticalAlignment="Top" Margin="5" Grid.Column="3" Grid.Row="0" />
+            <TextBox x:Name="txtFontHeight" Text="16" VerticalAlignment="Top" Margin="5" Grid.Column="4" Grid.Row="0" />
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1">
@@ -70,6 +73,5 @@
             <TextBox x:Name="txtStatus" TextWrapping="Wrap" Margin="5" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="LightGray" />
 
         </Grid>
-
     </Grid>
 </Window>

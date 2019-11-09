@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FontCreator.Models
 {
@@ -18,6 +16,16 @@ namespace FontCreator.Models
         public Character()
         {
             
+        }
+
+        public Character(int rows, int columns, int asciiValue)
+        {
+            data = new byte[rows * columns];
+
+            Width = columns;
+            Height = rows;
+
+            AsciiValue = asciiValue;
         }
 
         public bool IsPixelSet(int x, int y)
@@ -95,7 +103,6 @@ namespace FontCreator.Models
                 SetPixel(0, j, temp[j]);
             }
         }
-
 
         public void ShiftUp()
         {

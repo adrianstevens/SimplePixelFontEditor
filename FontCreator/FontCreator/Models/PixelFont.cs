@@ -12,6 +12,19 @@ namespace FontCreator.Models
         public List<Character> Characters { get; set; }
         public int Count => Characters.Count;
 
+        public PixelFont()
+        {
+
+        }
+
+        public PixelFont(int rows, int columns, int asciiStart, int asciiEnd)
+        {
+            for (int i = asciiStart; i < asciiEnd; i++)
+            {
+                Add(new Character(rows, columns, i));
+            }
+        }
+
         public void Add(Character character)
         {
             if(Characters == null)
