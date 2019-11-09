@@ -106,7 +106,7 @@
     <EmbeddedResource Include="font_6x8.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="font_12x18.txt" />
+    <EmbeddedResource Include="font_12x20.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

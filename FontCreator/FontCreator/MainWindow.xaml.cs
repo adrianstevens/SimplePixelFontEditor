@@ -30,9 +30,8 @@ namespace FontCreator
             EventManager.RegisterClassHandler(typeof(Window),
                 Keyboard.KeyUpEvent, new KeyEventHandler(OnKeyUp), true);
 
-
             int w = 12;
-            int h = 18;
+            int h = 20;
 
             SetGrid(w, h);
 
