@@ -20,7 +20,7 @@ namespace FontCreator.Models
 
         public Character(int rows, int columns, int asciiValue)
         {
-            data = new byte[rows * columns];
+            data = new byte[rows * columns / 8];
 
             Width = columns;
             Height = rows;

@@ -1,4 +1,5 @@
 ﻿using FontCreator.Models;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Reflection;
@@ -33,7 +34,7 @@ namespace FontCreator
             InitUI();
 
             int w = 12;
-            int h = 16;
+            int h = 20;
 
             LoadFont(w, h);
         }
@@ -52,7 +53,7 @@ namespace FontCreator
             {
                 UpdateStatus($"{fontName} not found");
                 UpdateStatus($"Creating new font");
-                currentFont = new PixelFont(height, width, 32, 127);
+                currentFont = new PixelFont(height, width, 32, 255);
             }
 
             SetGrid(width, height);
@@ -103,6 +104,33 @@ namespace FontCreator
             btnClear.Click += BtnClear_Click;
             btnSaveFont.Click += BtnSave_Click;
             btnLoadFont.Click += BtnLoad_Click;
+            btnOpenFont.Click += BtnOpen_Click;
+
+            txtPreview.Text = string.Empty;
+
+            for(int i = 0; i < 255; i++)
+            {
+                if (i == 0)
+                    i += 32;
+
+                if (i == 127)
+                    i += 33;
+
+                txtPreview.Text += (char)i;
+            }
+        }
+
+        private void BtnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                    
+                
+                //  File.ReadAllText(openFileDialog.FileName);
+            }
+
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -190,8 +218,12 @@ namespace FontCreator
                 }
             }
 
-            txtAscii.Text = $"Ascii: {32 + characterIndex}";
-            txtChar.Text = ((char)(32 + characterIndex)).ToString();
+            int offset = 32;
+            if (characterIndex > 126 - 32)
+                offset += 33;
+
+            txtAscii.Text = $"Ascii: {offset + characterIndex}";
+            txtChar.Text = ((char)(offset + characterIndex)).ToString();
         }
 
         PixelFont ParseFontText(int width, int height, string text)
@@ -214,11 +246,14 @@ namespace FontCreator
                 var c = new Character();
                 c.ParseCharData(width, height, line);
                 c.AsciiValue = index;
-                index++;
 
                 font.Add(c);
 
                 Console.WriteLine(c.GetLineText());
+
+                index++;
+                if (index == 127)
+                    index += 33;
             }
 
             return font;

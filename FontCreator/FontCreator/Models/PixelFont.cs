@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FontCreator.Models
 {
@@ -19,8 +15,19 @@ namespace FontCreator.Models
 
         public PixelFont(int rows, int columns, int asciiStart, int asciiEnd)
         {
-            for (int i = asciiStart; i < asciiEnd; i++)
+            //Control chars: 0-31
+            //127-159 
+            var end = asciiEnd;
+
+            if (asciiEnd > 126 && asciiEnd < 160)
+                end = 126;
+
+            for (int i = asciiStart; i < end; i++)
             {
+                //skip the control characters
+                if (i == 127)
+                    i += 33;
+
                 Add(new Character(rows, columns, i));
             }
         }
@@ -61,6 +68,18 @@ namespace FontCreator.Models
                     file.WriteLine(c.GetLineText());
                 }
             }
+
+            fileName = ($"font_{w}x{h}.cs");
+
+            using (StreamWriter file = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), fileName)))
+            {
+                foreach (var c in Characters)
+                {
+                    file.WriteLine("            new byte[]" + c.GetLineText());
+                }
+            }
+
+
         }
     }
 }
