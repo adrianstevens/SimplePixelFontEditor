@@ -313,7 +313,9 @@ namespace FontCreator
                         {
                             rect.Background = enabledBrush;
                         }
-                        currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), isDrawing);
+                        //should toggle 
+                        bool currentState = currentFont.GetCharacter(characterIndex).IsPixelSet(Grid.GetColumn(rect), Grid.GetRow(rect));
+                        currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), !currentState);
                     };
 
                     rect.MouseRightButtonDown += (s, a) =>

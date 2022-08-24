@@ -15,7 +15,6 @@ namespace FontCreator.Models
 
         public Character()
         {
-            
         }
 
         public Character(int rows, int columns, int asciiValue)
