@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 
 namespace FontCreator.Models
 {
@@ -8,10 +9,9 @@ namespace FontCreator.Models
         public List<Character> Characters { get; set; }
         public int Count => Characters.Count;
 
-        public PixelFont()
-        {
+        public int FontWidth => Characters[0]?.Width ?? 0;
 
-        }
+        public int FontHeight => Characters[0]?.Height ?? 0;
 
         public PixelFont(int rows, int columns, int asciiStart, int asciiEnd)
         {
@@ -78,8 +78,6 @@ namespace FontCreator.Models
                     file.WriteLine("            new byte[]" + c.GetLineText());
                 }
             }
-
-
         }
     }
 }

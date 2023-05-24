@@ -126,9 +126,11 @@ namespace FontCreator
 
             if (openFileDialog.ShowDialog() == true)
             {
-                    
-                
-                //  File.ReadAllText(openFileDialog.FileName);
+                var data = File.ReadAllText(openFileDialog.FileName);
+
+                var currentFont = FontClassLoader.LoadFont(Path.GetFileName(openFileDialog.FileName), data);
+
+                Console.WriteLine("File loaded");
             }
 
         }
