@@ -56,6 +56,7 @@
             <TextBlock Text="Font height:" VerticalAlignment="Top" Margin="5" Grid.Column="3" Grid.Row="0" />
             <TextBox x:Name="txtFontHeight" Text="16" VerticalAlignment="Top" Margin="5" Grid.Column="4" Grid.Row="0" />
             <Button x:Name="btnOpenFont" Content="Open Font" Grid.Column="2" Margin="5" Grid.Row="1" VerticalAlignment="Top" />
+            <Button x:Name="btnCreateFont" Content="Create Font" Grid.Column="4" Margin="5" Grid.Row="1" VerticalAlignment="Top" />
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1">

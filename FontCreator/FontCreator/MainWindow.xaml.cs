@@ -17,8 +17,8 @@ namespace FontCreator
     {
         Button[,] cells;
 
-        Brush enabledBrush = new SolidColorBrush(Colors.LawnGreen);
-        Brush disabledBrush = new SolidColorBrush(Colors.DarkGreen);
+        readonly Brush enabledBrush = new SolidColorBrush(Colors.LawnGreen);
+        readonly Brush disabledBrush = new SolidColorBrush(Colors.DarkGreen);
 
         PixelFont currentFont;
 
@@ -105,10 +105,11 @@ namespace FontCreator
             btnSaveFont.Click += BtnSave_Click;
             btnLoadFont.Click += BtnLoad_Click;
             btnOpenFont.Click += BtnOpen_Click;
+            btnCreateFont.Click += BtnCreate_Click;
 
             txtPreview.Text = string.Empty;
 
-            for(int i = 0; i < 255; i++)
+            for (int i = 0; i < 255; i++)
             {
                 if (i == 0)
                     i += 32;
@@ -118,6 +119,22 @@ namespace FontCreator
 
                 txtPreview.Text += (char)i;
             }
+        }
+
+        private void BtnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            int w = int.Parse(txtFontWidth.Text);
+            int h = int.Parse(txtFontHeight.Text);
+
+            var fontName = $"font_{w}x{h}.txt";
+
+            currentFont = new PixelFont(h, w, 32, 255);
+
+            UpdateStatus($"{fontName} created");
+
+            SetGrid(w, h);
+            UpdateGrid();
+
         }
 
         private void BtnOpen_Click(object sender, RoutedEventArgs e)
@@ -168,7 +185,7 @@ namespace FontCreator
             {
                 characterIndex++;
             }
- 
+
             UpdateGrid();
         }
 
@@ -214,7 +231,7 @@ namespace FontCreator
         {
             for (int i = 0; i < cells.GetLength(0); i++)
             {
-                for(int j = 0; j < cells.GetLength(1); j++)
+                for (int j = 0; j < cells.GetLength(1); j++)
                 {
                     cells[i, j].Background = currentFont.GetCharacter(characterIndex).IsPixelSet(i, j) ? enabledBrush : disabledBrush;
                 }
@@ -230,7 +247,7 @@ namespace FontCreator
 
         PixelFont ParseFontText(int width, int height, string text)
         {
-            var font = new PixelFont();
+            var font = new PixelFont(height, width);
 
             var reader = new StringReader(text);
 
@@ -263,7 +280,7 @@ namespace FontCreator
 
         void SetGrid(int columns, int rows)
         {
-            if(cells != null)
+            if (cells != null)
             {
                 foreach (var cell in cells)
                 {
@@ -276,7 +293,7 @@ namespace FontCreator
 
             int count = Math.Max(rows, columns);
 
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 gridPixel.RowDefinitions.Add(new RowDefinition());
             }
@@ -303,7 +320,7 @@ namespace FontCreator
 
                     cells[x, y] = rect;
 
-                   // rect.PreviewMouseLeftButtonUp
+                    // rect.PreviewMouseLeftButtonUp
 
                     rect.PreviewMouseLeftButtonDown += (s, a) =>
                     {
@@ -322,7 +339,7 @@ namespace FontCreator
 
                     rect.MouseRightButtonDown += (s, a) =>
                     {
-                        if(rect.Background == enabledBrush)
+                        if (rect.Background == enabledBrush)
                         {
                             isDrawing = false;
                             rect.Background = disabledBrush;
@@ -336,7 +353,7 @@ namespace FontCreator
                         currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), isDrawing);
                     };
 
-                    rect.MouseMove += (s, a) => 
+                    rect.MouseMove += (s, a) =>
                     {
                         if (a.RightButton == MouseButtonState.Pressed)
                         {
@@ -375,7 +392,7 @@ namespace FontCreator
 
         private void UpdateStatus(string text)
         {
-            txtStatus.Text += text + "\r\n"; 
+            txtStatus.Text += text + "\r\n";
         }
     }
 }
