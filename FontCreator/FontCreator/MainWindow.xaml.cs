@@ -33,8 +33,8 @@ namespace FontCreator
 
             InitUI();
 
-            int w = 12;
-            int h = 20;
+            int w = 16;
+            int h = 24;
 
             LoadFont(w, h);
         }
@@ -154,7 +154,7 @@ namespace FontCreator
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            currentFont.Save();
+            currentFont.Save(true);
 
             UpdateStatus($"saved");
         }
@@ -247,7 +247,7 @@ namespace FontCreator
 
         PixelFont ParseFontText(int width, int height, string text)
         {
-            var font = new PixelFont(height, width);
+            var font = new PixelFont();
 
             var reader = new StringReader(text);
 
@@ -259,8 +259,7 @@ namespace FontCreator
             {
                 line = reader.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(line))
-                    break;
+                if (string.IsNullOrWhiteSpace(line)) { break; }
 
                 var c = new Character();
                 c.ParseCharData(width, height, line);
@@ -271,8 +270,11 @@ namespace FontCreator
                 Console.WriteLine(c.GetLineText());
 
                 index++;
+
                 if (index == 127)
+                {
                     index += 33;
+                }
             }
 
             return font;

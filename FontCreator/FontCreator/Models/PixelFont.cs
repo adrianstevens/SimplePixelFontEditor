@@ -31,12 +31,13 @@ namespace FontCreator.Models
             }
         }
 
+        public PixelFont()
+        {
+        }
+
         public void Add(Character character)
         {
-            if (Characters == null)
-            {
-                Characters = new List<Character>();
-            }
+            Characters ??= new List<Character>();
 
             Characters.Add(character);
         }
@@ -51,16 +52,16 @@ namespace FontCreator.Models
             Characters.Clear();
         }
 
-        public void Save()
+        public void Save(bool updateProjectFiles = false)
         {
             if (Characters == null || Characters.Count == 0)
                 return;
 
             var w = Characters[0].Width;
             var h = Characters[0].Height;
-            var fileName = ($"font_{w}x{h}.txt");
+            var fileName = $"font_{w}x{h}.txt";
 
-            using (StreamWriter file = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), fileName)))
+            using (var file = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), fileName)))
             {
                 foreach (var c in Characters)
                 {
@@ -68,15 +69,30 @@ namespace FontCreator.Models
                 }
             }
 
-            fileName = ($"font_{w}x{h}.cs");
+            if (updateProjectFiles)
+            {
+                var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
 
-            using (StreamWriter file = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), fileName)))
+                using var file = new StreamWriter(Path.Combine(path, fileName));
+                foreach (var c in Characters)
+                {
+                    file.WriteLine(c.GetLineText());
+                }
+                file.Close();
+            }
+
+            fileName = $"font_{w}x{h}.cs";
+
+            using (var file = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), fileName)))
             {
                 foreach (var c in Characters)
                 {
                     file.WriteLine("            new byte[]" + c.GetLineText());
                 }
+                file.Close();
             }
+
+
         }
     }
 }

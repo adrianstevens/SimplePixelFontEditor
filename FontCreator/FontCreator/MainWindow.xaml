@@ -52,9 +52,9 @@
             <Button Name="btnSaveFont" Content="Save font" VerticalAlignment="Top" Margin="5" Grid.Column="0" Grid.Row="1" />
             <Button x:Name="btnLoadFont" Content="Load font" VerticalAlignment="Top" Margin="5" Grid.Column="0" Grid.Row="0" />
             <TextBlock Text="Font width:" VerticalAlignment="Top" Margin="5" Grid.Column="1" Grid.Row="0" />
-            <TextBox x:Name="txtFontWidth" Text="12" VerticalAlignment="Top" Margin="5" Grid.Column="2" Grid.Row="0" />
+            <TextBox x:Name="txtFontWidth" Text="16" VerticalAlignment="Top" Margin="5" Grid.Column="2" Grid.Row="0" />
             <TextBlock Text="Font height:" VerticalAlignment="Top" Margin="5" Grid.Column="3" Grid.Row="0" />
-            <TextBox x:Name="txtFontHeight" Text="16" VerticalAlignment="Top" Margin="5" Grid.Column="4" Grid.Row="0" />
+            <TextBox x:Name="txtFontHeight" Text="24" VerticalAlignment="Top" Margin="5" Grid.Column="4" Grid.Row="0" />
             <Button x:Name="btnOpenFont" Content="Open Font" Grid.Column="2" Margin="5" Grid.Row="1" VerticalAlignment="Top" />
             <Button x:Name="btnCreateFont" Content="Create Font" Grid.Column="4" Margin="5" Grid.Row="1" VerticalAlignment="Top" />
         </Grid>
