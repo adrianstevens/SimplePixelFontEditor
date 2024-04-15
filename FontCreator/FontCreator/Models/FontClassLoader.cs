@@ -17,7 +17,7 @@ namespace FontCreator
             int width = int.Parse(filename.Substring(4, xIndex - 4));
             int height = int.Parse(filename.Substring(xIndex + 1, periodIndex  - xIndex - 1));
 
-            //load the pixel buffer data
+            //load the pixel buffer Data
             //each line starts with new byte[]
             var lines = code.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 

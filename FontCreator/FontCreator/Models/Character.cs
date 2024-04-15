@@ -11,7 +11,7 @@ namespace FontCreator.Models
 
         public int AsciiValue { get; set; }
 
-        byte[] data;
+        public byte[] Data { get; set; }
 
         public Character()
         {
@@ -19,7 +19,7 @@ namespace FontCreator.Models
 
         public Character(int rows, int columns, int asciiValue)
         {
-            data = new byte[rows * columns / 8];
+            Data = new byte[rows * columns / 8];
 
             Width = columns;
             Height = rows;
@@ -29,7 +29,7 @@ namespace FontCreator.Models
 
         public bool IsPixelSet(int x, int y)
         {
-            if(x < 0 || y < 0 || x >= Width || y >= Height)
+            if (x < 0 || y < 0 || x >= Width || y >= Height)
             {
                 return false;
             }
@@ -37,7 +37,7 @@ namespace FontCreator.Models
             var byteIndex = (y * Width + x) / 8;
             var bitIndex = (y * Width + x) % 8;
 
-            var value = data[byteIndex];
+            var value = Data[byteIndex];
 
             return (value & (1 << bitIndex)) != 0;
         }
@@ -55,11 +55,11 @@ namespace FontCreator.Models
 
             if (set)
             {
-                data[byteIndex] |= mask;
+                Data[byteIndex] |= mask;
             }
             else
             {
-                data[byteIndex] &= (byte)~mask;
+                Data[byteIndex] &= (byte)~mask;
             }
         }
 
@@ -106,18 +106,18 @@ namespace FontCreator.Models
         public void ShiftUp()
         {
             var temp = new bool[Width];
-            
-            for(int j = 0; j < Height - 1; j++)
+
+            for (int j = 0; j < Height - 1; j++)
             {
                 for (int i = 0; i < Width; i++)
                 {
-                    if (j == 0){ temp[i] = IsPixelSet(i, j); }
+                    if (j == 0) { temp[i] = IsPixelSet(i, j); }
 
                     SetPixel(i, j, IsPixelSet(i, j + 1));
                 }
             }
 
-            for (int i = 0; i < Width; i++) 
+            for (int i = 0; i < Width; i++)
             {
                 SetPixel(i, Height - 1, temp[i]);
             }
@@ -145,9 +145,9 @@ namespace FontCreator.Models
 
         public void Clear()
         {
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < Data.Length; i++)
             {
-                data[i] = 0;
+                Data[i] = 0;
             }
         }
 
@@ -167,11 +167,11 @@ namespace FontCreator.Models
                 var value = Convert.ToByte(character, 16);
 
                 data.Add(value);
-                
+
                 index = line.IndexOf("0x", index + 4);
             }
 
-            this.data = data.ToArray();
+            this.Data = data.ToArray();
         }
 
         public string GetLineText()
@@ -179,7 +179,7 @@ namespace FontCreator.Models
             var line = new StringBuilder();
 
             line.Append(@"{0x");
-            var hex = BitConverter.ToString(data).Replace("-", ", 0x");
+            var hex = BitConverter.ToString(Data).Replace("-", ", 0x");
             line.Append(hex);
             line.Append(@"}, //");
             line.Append(AsciiValue.ToString("X4"));

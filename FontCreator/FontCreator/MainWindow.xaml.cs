@@ -17,10 +17,18 @@ namespace FontCreator
     {
         Button[,] cells;
 
+        readonly Brush enabledTopBrush = new SolidColorBrush(Colors.Cyan);
+        readonly Brush disabledTopBrush = new SolidColorBrush(Colors.DarkCyan);
+
         readonly Brush enabledBrush = new SolidColorBrush(Colors.LawnGreen);
         readonly Brush disabledBrush = new SolidColorBrush(Colors.DarkGreen);
 
+        readonly Brush enabledBottomBrush = new SolidColorBrush(Colors.Yellow);
+        readonly Brush disabledBottomBrush = new SolidColorBrush(Colors.DarkGoldenrod);
+
         PixelFont currentFont;
+
+        Character? copyBuffer;
 
         int characterIndex = 0;
 
@@ -76,6 +84,12 @@ namespace FontCreator
                 case Key.N:
                     BtnNext_Click(sender, new RoutedEventArgs());
                     break;
+                case Key.M:
+                    for (int i = 0; i < 10; i++)
+                    {
+                        BtnNext_Click(sender, new RoutedEventArgs());
+                    }
+                    break;
                 case Key.S:
                     BtnStart_Click(sender, new RoutedEventArgs());
                     break;
@@ -107,6 +121,9 @@ namespace FontCreator
             btnOpenFont.Click += BtnOpen_Click;
             btnCreateFont.Click += BtnCreate_Click;
 
+            btnCopy.Click += BtnCopy_Click;
+            btnPaste.Click += BtnPaste_Click;
+
             txtPreview.Text = string.Empty;
 
             for (int i = 0; i < 255; i++)
@@ -119,6 +136,21 @@ namespace FontCreator
 
                 txtPreview.Text += (char)i;
             }
+        }
+
+        private void BtnPaste_Click(object sender, RoutedEventArgs e)
+        {
+            //set the current character from the copy buffer if it's not null
+            if (copyBuffer != null)
+            {
+                Array.Copy(copyBuffer.Data, currentFont.Characters[characterIndex].Data, copyBuffer.Data.Length);
+                UpdateGrid();
+            }
+        }
+
+        private void BtnCopy_Click(object sender, RoutedEventArgs e)
+        {
+            copyBuffer = currentFont.GetCharacter(characterIndex);
         }
 
         private void BtnCreate_Click(object sender, RoutedEventArgs e)
