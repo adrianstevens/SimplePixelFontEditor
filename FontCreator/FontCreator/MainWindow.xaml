@@ -3,80 +3,154 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FontCreator"
         mc:Ignorable="d"
-        Title="PixelFont Creator v0.0.3 - Sept, 2025" 
-        Height="600">
-    <Grid>
+        Title="PixelFont Creator v0.0.3 - Sept, 2025"
+        Height="680" Width="980"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <!-- Left: pixel editor -->
+            <ColumnDefinition Width="Auto"/>
+            <!-- Right: controls / preview / status -->
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Name="gridPixel" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="400" Background="#FF1B4729" />
-        <Grid Margin="10" HorizontalAlignment="Stretch" Height="60" Grid.Row="1" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Button Name="btnStart" Content="Start (s)" VerticalAlignment="Top" Margin="5" Grid.Column="0" />
-            <Button Name="btnBack" Content="Back (b)" VerticalAlignment="Top" Margin="5" Grid.Column="1" />
-            <Button Name="btnNext" Content="Next (n)" VerticalAlignment="Top" Margin="5" Grid.Column="2" />
-            <Button Name="btnEnd" Content="End (e)" VerticalAlignment="Top" Margin="5" Grid.Column="3" />
+        <!-- Pixel grid (fixed working area) -->
+        <Border Grid.Row="0" Grid.Column="0" Margin="0,0,12,0" Padding="8" Background="#10202020" CornerRadius="6">
+            <Grid>
+                <Grid Name="gridPixel"
+                      Width="400" Height="400"
+                      Background="#FF1B4729"/>
+            </Grid>
+        </Border>
 
-            <Button x:Name="btnClear" Content="Clear" VerticalAlignment="Top" Margin="5" Grid.Row="1" />
-
-            <Button x:Name="btnCopy" Content="Copy" VerticalAlignment="Top" Margin="5" Grid.Row="1" Grid.Column="2" />
-            <Button x:Name="btnPaste" Content="Pasta" VerticalAlignment="Top" Margin="5" Grid.Row="1"  Grid.Column="3"/>
-        </Grid>
-
-        <Grid Margin="10" Grid.Row="1" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Button Name="btnSaveFont" Content="Save font" VerticalAlignment="Top" Margin="5" Grid.Column="0" Grid.Row="1" />
-            <Button x:Name="btnLoadFont" Content="Load font" VerticalAlignment="Top" Margin="5" Grid.Column="0" Grid.Row="0" />
-            <TextBlock Text="Font width:" VerticalAlignment="Top" Margin="5" Grid.Column="1" Grid.Row="0" />
-            <TextBox x:Name="txtFontWidth" Text="16" VerticalAlignment="Top" Margin="5" Grid.Column="2" Grid.Row="0" />
-            <TextBlock Text="Font height:" VerticalAlignment="Top" Margin="5" Grid.Column="3" Grid.Row="0" />
-            <TextBox x:Name="txtFontHeight" Text="24" VerticalAlignment="Top" Margin="5" Grid.Column="4" Grid.Row="0" />
-            <Button x:Name="btnOpenFont" Content="Open Font" Grid.Column="2" Margin="5" Grid.Row="1" VerticalAlignment="Top" />
-            <Button x:Name="btnCreateFont" Content="Create Font" Grid.Column="4" Margin="5" Grid.Row="1" VerticalAlignment="Top" />
-        </Grid>
-
+        <!-- Right side: Controls + Preview + Status -->
         <Grid Grid.Row="0" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <!-- Top: per-glyph nav + file ops -->
+                <RowDefinition Height="Auto"/>
+                <!-- Middle: metrics + font settings + live preview -->
+                <RowDefinition Height="Auto"/>
+                <!-- Bottom: status/output -->
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="txtChar" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="" Margin="5"  VerticalAlignment="Center" FontSize="100" Background="LightGray"/>
-            <TextBlock x:Name="txtAscii" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="" Margin="5"  VerticalAlignment="Top" Grid.Column="1"/>
-            <TextBox x:Name="txtStatus" TextWrapping="Wrap" Margin="5" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="LightGray" />
-            <TextBlock x:Name="txtPreview" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="0" Text="ABCDEFG" FontSize="16" TextWrapping="Wrap" />
+
+            <!-- Row 0: Navigation / Clipboard / File Ops -->
+            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
+                <!-- Left group: glyph navigation -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="0,0,16,0">
+                    <Button Name="btnStart" Content="_Start (s)" Margin="4"/>
+                    <Button Name="btnBack"  Content="_Back (b)"  Margin="4"/>
+                    <Button Name="btnNext"  Content="_Next (n)"  Margin="4"/>
+                    <Button Name="btnEnd"   Content="_End (e)"   Margin="4"/>
+                    <Button x:Name="btnClear" Content="C_lear" Margin="4"/>
+                    <Button x:Name="btnCopy"  Content="_Copy"  Margin="4"/>
+                    <Button x:Name="btnPaste" Content="Pa_ste" Margin="4"/>
+                </StackPanel>
+
+                <!-- Right group: file ops -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button x:Name="btnLoadFont" Content="_Load" Margin="4"/>
+                    <Button x:Name="btnSaveFont" Content="_Save" Margin="4"/>
+                    <Button x:Name="btnOpenFont" Content="_Open File…" Margin="4"/>
+                    <Button x:Name="btnCreateFont" Content="_Create" Margin="4"/>
+                    <TextBlock Text="Width:" VerticalAlignment="Center" Margin="8,0,4,0"/>
+                    <TextBox x:Name="txtFontWidth"  Width="48" Text="16" Margin="0,0,8,0" VerticalContentAlignment="Center"/>
+                    <TextBlock Text="Height:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBox x:Name="txtFontHeight" Width="48" Text="24" VerticalContentAlignment="Center"/>
+                </StackPanel>
+            </DockPanel>
+
+            <!-- Row 1: Metrics + Font spacing + Character preview + Proportional preview width -->
+            <Grid Grid.Row="1" Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left column: Current character big + ASCII -->
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock x:Name="txtChar"
+                               Text=""
+                               FontSize="100"
+                               Background="#FFE5E5E5"
+                               Padding="8"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               Width="220" Height="140"/>
+                    <TextBlock x:Name="txtAscii" Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <!-- Right column: Metrics + Spacing + Live text preview -->
+                <StackPanel Grid.Column="1">
+                    <!-- Metrics panel -->
+                    <Border Padding="8" Background="#0F000000" CornerRadius="6">
+                        <StackPanel>
+                            <TextBlock Text="Glyph metrics" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                            <WrapPanel Margin="0,0,0,4">
+                                <TextBlock Text="Left:" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="lblLeft" Margin="0,0,12,0"/>
+                                <TextBlock Text="Right:" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="lblRight" Margin="0,0,12,0"/>
+                                <TextBlock Text="TrimW:" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="lblTrimW" Margin="0,0,12,0"/>
+                                <TextBlock Text="XOffset:" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="lblXOffset" Margin="0,0,12,0"/>
+                                <TextBlock Text="XAdvance:" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="lblXAdvance"/>
+                            </WrapPanel>
+
+                            <!-- Spacing inputs -->
+                            <WrapPanel Margin="0,6,0,0">
+                                <TextBlock Text="Letter spacing:" Margin="0,0,4,0"/>
+                                <TextBox x:Name="txtLetterSpacing" Width="40" Text="1" Margin="0,0,12,0"/>
+                                <TextBlock Text="Space advance:" Margin="0,0,4,0"/>
+                                <TextBox x:Name="txtSpaceAdvance" Width="40" Margin="0,0,12,0" ToolTip="Leave blank to use width/2"/>
+                                <TextBlock Text="Min advance:" Margin="0,0,4,0"/>
+                                <TextBox x:Name="txtMinAdvance" Width="40" Text="1"/>
+                            </WrapPanel>
+
+                            <!-- Live preview width -->
+                            <WrapPanel Margin="0,6,0,0">
+                                <TextBlock Text="Preview width:" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="lblPreviewWidth"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Text preview (editable) -->
+                    <Border Padding="8" Background="#0F000000" CornerRadius="6" Margin="0,8,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Preview text" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                            <TextBox x:Name="txtPreview"
+                                     Text="The quick brown fox jumps over the lazy dog. 0123456789
+WAVVY — Illi.;:!  ~|[]{} () &amp; @#$%"
+                                     FontSize="16"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     MinHeight="60"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <!-- Row 2: Status -->
+            <Border Grid.Row="2" Background="#FFEFEFEF" Padding="8" CornerRadius="6">
+                <DockPanel LastChildFill="True">
+                    <TextBlock Text="Status" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="0,0,0,4"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBox x:Name="txtStatus"
+                                 Background="White"
+                                 IsReadOnly="True"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto"
+                                 MinHeight="100"/>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
         </Grid>
     </Grid>
 </Window>
