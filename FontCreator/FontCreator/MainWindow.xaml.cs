@@ -25,6 +25,9 @@ namespace FontCreator
         Character copyBuffer;
 
         int characterIndex = 0;
+        int letterSpacingPx = 1;
+        int minAdvancePx = 1;
+        int? spaceAdvancePx = null;
 
         public MainWindow()
         {
@@ -38,6 +41,52 @@ namespace FontCreator
             int h = 24;
 
             LoadFont(w, h);
+        }
+
+        void ShadeTrimGuides(int left, int right)
+        {
+            if (cells == null) return;
+
+            // reset borders
+            for (int x = 0; x < cells.GetLength(0); x++)
+                for (int y = 0; y < cells.GetLength(1); y++)
+                    cells[x, y].BorderThickness = new Thickness(0);
+
+            if (left >= 0)
+                for (int y = 0; y < currentFont.Height; y++)
+                    cells[left, y].BorderThickness = new Thickness(2, 0, 0, 0);
+
+            if (right >= 0)
+                for (int y = 0; y < currentFont.Height; y++)
+                    cells[right, y].BorderThickness = new Thickness(0, 0, 2, 0);
+        }
+
+        (int left, int right, int trimW, int xAdv) ComputeMetrics(Character ch)
+        {
+            int W = currentFont.Width;
+            int H = currentFont.Height;
+
+            int left = -1, right = -1;
+            for (int x = 0; x < W; x++)
+            {
+                bool any = false;
+                for (int y = 0; y < H; y++)
+                {
+                    if (ch.IsPixelSet(x, y)) { any = true; break; }
+                }
+                if (any) { if (left == -1) left = x; right = x; }
+            }
+
+            if (left == -1)
+            {
+                int spaceAdv = spaceAdvancePx ?? (W / 2);
+                int adv = Math.Max(spaceAdv, minAdvancePx) + letterSpacingPx;
+                return (-1, -1, 0, adv);
+            }
+
+            int trim = right - left + 1;
+            int xAdv = Math.Max(trim, minAdvancePx) + letterSpacingPx;
+            return (left, right, trim, xAdv);
         }
 
         private void LoadFont(int width, int height)
@@ -267,6 +316,10 @@ namespace FontCreator
 
             txtAscii.Text = $"Ascii: {offset + characterIndex}";
             txtChar.Text = ((char)(offset + characterIndex)).ToString();
+
+            var m = ComputeMetrics(currentFont.GetCharacter(characterIndex));
+            ShadeTrimGuides(m.left, m.right);
+            UpdateStatus($"Trim: {m.trimW}px  XAdvance: {m.xAdv}px");
         }
 
         PixelFont ParseFontText(int width, int height, string text)

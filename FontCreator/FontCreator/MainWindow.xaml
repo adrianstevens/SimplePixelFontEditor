@@ -134,8 +134,7 @@
                                      AcceptsReturn="True"
                                      TextWrapping="Wrap"
                                      MinHeight="120"
-                                     Text="The quick brown fox jumps over the lazy dog. 0123456789
-WAVVY — Illi.;:!  ~|[]{} () &amp; @#$%"/>
+                                     Text="The quick brown fox jumps over the lazy dog. 0123456789 WAVVY — Illi.;:!  ~|[]{} () &amp; @#$%"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

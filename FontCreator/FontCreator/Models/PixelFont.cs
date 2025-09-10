@@ -8,9 +8,9 @@ namespace FontCreator.Models
         public List<Character> Characters { get; set; }
         public int Count => Characters.Count;
 
-        public int FontWidth => Characters[0]?.Width ?? 0;
+        public int Width => Characters[0]?.Width ?? 0;
 
-        public int FontHeight => Characters[0]?.Height ?? 0;
+        public int Height => Characters[0]?.Height ?? 0;
 
         public PixelFont(int rows, int columns, int asciiStart = 0x20, int asciiEnd = 126)
         {
