@@ -24,66 +24,78 @@
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <!-- Left: pixel editor (fixed width) -->
+            <!-- Left: pixel editor + editing toolbar -->
             <ColumnDefinition Width="Auto"/>
-            <!-- Right: flexible controls -->
+            <!-- Right: file ops + metrics + preview + status -->
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Pixel grid -->
+        <!-- LEFT: Pixel grid + editing buttons -->
         <Border Grid.Column="0" Margin="0,0,12,0" Padding="8" Background="#10202020" CornerRadius="6">
             <Grid>
-                <Grid Name="gridPixel"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- pixel grid -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- editing toolbar -->
+                </Grid.RowDefinitions>
+
+                <!-- Pixel grid -->
+                <Grid x:Name="gridPixel"
+                      Grid.Row="0"
                       Width="480" Height="480"
                       Background="#FF1B4729"/>
+
+                <!-- Editing buttons (Start → Paste) -->
+                <Border Grid.Row="1" Margin="0,8,0,0" Padding="8" Background="#0F000000" CornerRadius="6">
+                    <WrapPanel VerticalAlignment="Center" MaxWidth="480">
+                        <Button x:Name="btnStart" Content="_Start (s)"/>
+                        <Button x:Name="btnBack"  Content="_Back (b)"/>
+                        <Button x:Name="btnNext"  Content="_Next (n)"/>
+                        <Button x:Name="btnEnd"   Content="_End (e)"/>
+                        <Button x:Name="btnClear" Content="C_lear"/>
+                        <Button x:Name="btnCopy"  Content="_Copy"/>
+                        <Button x:Name="btnPaste" Content="Pa_ste"/>
+                    </WrapPanel>
+                </Border>
             </Grid>
         </Border>
 
-        <!-- Right side -->
+        <!-- RIGHT: File ops + content + status -->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- Nav / file ops -->
+                <!-- file ops -->
                 <RowDefinition Height="*"/>
-                <!-- Content -->
+                <!-- content area -->
                 <RowDefinition Height="Auto"/>
-                <!-- Status -->
+                <!-- status -->
             </Grid.RowDefinitions>
 
-            <!-- Row 0: Navigation + file ops -->
+            <!-- File ops at top-right -->
             <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="0,0,16,0">
-                    <Button Name="btnStart" Content="_Start (s)"/>
-                    <Button Name="btnBack"  Content="_Back (b)"/>
-                    <Button Name="btnNext"  Content="_Next (n)"/>
-                    <Button Name="btnEnd"   Content="_End (e)"/>
-                    <Button x:Name="btnClear" Content="C_lear"/>
-                    <Button x:Name="btnCopy"  Content="_Copy"/>
-                    <Button x:Name="btnPaste" Content="Pa_ste"/>
-                </StackPanel>
-
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
-                    <Button x:Name="btnLoadFont" Content="_Load"/>
-                    <Button x:Name="btnSaveFont" Content="_Save"/>
-                    <Button x:Name="btnOpenFont" Content="_Open File…"/>
+                    <Button x:Name="btnLoadFont"  Content="_Load"/>
+                    <Button x:Name="btnSaveFont"  Content="_Save"/>
+                    <Button x:Name="btnOpenFont"  Content="_Open File…"/>
                     <Button x:Name="btnCreateFont" Content="_Create"/>
-                    <TextBlock Text="Width:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-                    <TextBox x:Name="txtFontWidth"  Width="56" Text="16"/>
+                    <TextBlock Text="Width:"  VerticalAlignment="Center" Margin="12,0,4,0"/>
+                    <TextBox   x:Name="txtFontWidth"  Width="56" Text="16"/>
                     <TextBlock Text="Height:" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBox x:Name="txtFontHeight" Width="56" Text="24"/>
+                    <TextBox   x:Name="txtFontHeight" Width="56" Text="24"/>
                 </StackPanel>
             </DockPanel>
 
-            <!-- Row 1: Main content area in two columns -->
+            <!-- Main content area -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="340"/>
-                    <!-- left panel: big glyph + ascii -->
+                    <!-- big glyph + ASCII -->
                     <ColumnDefinition Width="*"/>
-                    <!-- right panel: metrics + preview -->
+                    <!-- metrics + preview -->
                 </Grid.ColumnDefinitions>
 
-                <!-- Left content: current character -->
+                <!-- Left: current glyph preview -->
                 <StackPanel Grid.Column="0" Margin="0,0,16,0">
                     <TextBlock x:Name="txtChar"
                                Text=""
@@ -95,7 +107,7 @@
                     <TextBlock x:Name="txtAscii" Margin="0,8,0,0"/>
                 </StackPanel>
 
-                <!-- Right content: metrics + spacing + preview -->
+                <!-- Right: metrics + preview -->
                 <StackPanel Grid.Column="1">
                     <Border Padding="10" Background="#0F000000" CornerRadius="6" MaxWidth="900">
                         <StackPanel>
@@ -134,13 +146,13 @@
                                      AcceptsReturn="True"
                                      TextWrapping="Wrap"
                                      MinHeight="120"
-                                     Text="The quick brown fox jumps over the lazy dog. 0123456789 WAVVY — Illi.;:!  ~|[]{} () &amp; @#$%"/>
+                                     Text="The quick brown fox jumps over the lazy dog. 0123456789WAVVY — Illi.;:!  ~|[]{} () &amp; @#$%"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
             </Grid>
 
-            <!-- Row 2: Status -->
+            <!-- Status panel -->
             <Border Grid.Row="2" Background="#FFEFEFEF" Padding="8" CornerRadius="6" Margin="0,8,0,0">
                 <DockPanel LastChildFill="True">
                     <TextBlock Text="Status" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="0,0,0,4"/>
@@ -156,3 +168,5 @@
         </Grid>
     </Grid>
 </Window>
+
+    
