@@ -17,14 +17,8 @@ namespace FontCreator
     {
         Button[,] cells;
 
-        readonly Brush enabledTopBrush = new SolidColorBrush(Colors.Cyan);
-        readonly Brush disabledTopBrush = new SolidColorBrush(Colors.DarkCyan);
-
         readonly Brush enabledBrush = new SolidColorBrush(Colors.LawnGreen);
         readonly Brush disabledBrush = new SolidColorBrush(Colors.DarkGreen);
-
-        readonly Brush enabledBottomBrush = new SolidColorBrush(Colors.Yellow);
-        readonly Brush disabledBottomBrush = new SolidColorBrush(Colors.DarkGoldenrod);
 
         PixelFont currentFont;
 
@@ -126,26 +120,25 @@ namespace FontCreator
 
             txtPreview.Text = string.Empty;
 
-            for (int i = 0; i < 255; i++)
-            {
-                if (i == 0)
-                    i += 32;
+            txtPreview.Text = BuildPreview();
+        }
 
-                if (i == 127)
-                    i += 33;
-
-                txtPreview.Text += (char)i;
-            }
+        string BuildPreview()
+        {
+            var sb = new System.Text.StringBuilder();
+            // ASCII printable
+            for (int i = 32; i <= 126; i++) sb.Append((char)i);
+            // Latin-1 supplement (skip DEL gap)
+            for (int i = 160; i <= 255; i++) sb.Append((char)i);
+            return sb.ToString();
         }
 
         private void BtnPaste_Click(object sender, RoutedEventArgs e)
         {
-            //set the current character from the copy buffer if it's not null
-            if (copyBuffer != null)
-            {
-                Array.Copy(copyBuffer.Data, currentFont.Characters[characterIndex].Data, copyBuffer.Data.Length);
-                UpdateGrid();
-            }
+            if (copyBuffer == null) { return; }
+
+            Array.Copy(copyBuffer.Data, currentFont.Characters[characterIndex].Data, copyBuffer.Data.Length);
+            UpdateGrid();
         }
 
         private void BtnCopy_Click(object sender, RoutedEventArgs e)
@@ -177,7 +170,7 @@ namespace FontCreator
             {
                 var data = File.ReadAllText(openFileDialog.FileName);
 
-                var currentFont = FontClassLoader.LoadFont(Path.GetFileName(openFileDialog.FileName), data);
+                currentFont = FontClassLoader.LoadFont(Path.GetFileName(openFileDialog.FileName), data);
 
                 Console.WriteLine("File loaded");
             }
@@ -347,14 +340,13 @@ namespace FontCreator
                     {
                         Background = disabledBrush,
                         Margin = new Thickness(1),
+                        Focusable = false
                     };
 
                     Grid.SetColumn(rect, x);
                     Grid.SetRow(rect, y);
 
                     cells[x, y] = rect;
-
-                    // rect.PreviewMouseLeftButtonUp
 
                     rect.PreviewMouseLeftButtonDown += (s, a) =>
                     {
@@ -366,34 +358,24 @@ namespace FontCreator
                         {
                             rect.Background = enabledBrush;
                         }
-                        //should toggle 
                         bool currentState = currentFont.GetCharacter(characterIndex).IsPixelSet(Grid.GetColumn(rect), Grid.GetRow(rect));
                         currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), !currentState);
+                        rect.Background = !currentState ? enabledBrush : disabledBrush;
                     };
 
                     rect.MouseRightButtonDown += (s, a) =>
                     {
-                        if (rect.Background == enabledBrush)
-                        {
-                            isDrawing = false;
-                            rect.Background = disabledBrush;
-                        }
-                        else
-                        {
-                            isDrawing = true;
-                            rect.Background = enabledBrush;
-                        }
-                        //lazy but it'll work ...
-                        currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), isDrawing);
+                        isDrawing = !isDrawing;
+                        currentFont.GetCharacter(characterIndex).SetPixel(x, y, isDrawing);
+                        rect.Background = isDrawing ? enabledBrush : disabledBrush;
                     };
 
                     rect.MouseMove += (s, a) =>
                     {
                         if (a.RightButton == MouseButtonState.Pressed)
                         {
+                            currentFont.GetCharacter(characterIndex).SetPixel(x, y, isDrawing);
                             rect.Background = isDrawing ? enabledBrush : disabledBrush;
-                            currentFont.GetCharacter(characterIndex).SetPixel(Grid.GetColumn(rect), Grid.GetRow(rect), isDrawing);
-
                         }
                     };
 
@@ -415,13 +397,15 @@ namespace FontCreator
 
             var resourceName = $"FontCreator.{name}";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using Stream stream = assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd();
-                }
+                throw new FileNotFoundException($"Embedded resource not found: {resourceName}");
             }
+
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
         }
 
         private void UpdateStatus(string text)
