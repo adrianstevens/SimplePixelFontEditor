@@ -30,8 +30,7 @@ namespace FontCreator
         {
             InitializeComponent();
 
-            EventManager.RegisterClassHandler(typeof(Window),
-                Keyboard.KeyUpEvent, new KeyEventHandler(OnKeyUp), true);
+            EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyUpEvent, new KeyEventHandler(OnKeyUp), true);
 
             InitUI();
 
