@@ -28,7 +28,7 @@ namespace FontCreator
 
         PixelFont currentFont;
 
-        Character? copyBuffer;
+        Character copyBuffer;
 
         int characterIndex = 0;
 

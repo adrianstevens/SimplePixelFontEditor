@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FontCreator"
         mc:Ignorable="d"
-        Title="PixelFont Creator v0.0.2 - Nov, 2019" 
+        Title="PixelFont Creator v0.0.3 - Sept, 2025" 
         Height="600">
     <Grid>
         <Grid.ColumnDefinitions>
